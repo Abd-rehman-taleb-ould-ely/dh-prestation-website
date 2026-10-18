@@ -103,6 +103,9 @@ const symColor = svg('dhp-symbol-color');
 const symWhite = svg('dhp-symbol-white');
 const symBlack = svg('dhp-symbol-black');
 const appIcon = svg('dhp-app-icon');
+const monoColor = svg('dhp-monogram-color');
+const monoWhite = svg('dhp-monogram-white');
+const monoBlack = svg('dhp-monogram-black');
 
 const pages = [];
 
@@ -137,9 +140,10 @@ pages.push(
         </ul>
         <h3>Contents</h3>
         <ol class="toc mono">
-          <li>02 · Logo</li><li>03 · Logo versions</li><li>04 · Clear space and minimum size</li>
-          <li>05 · Incorrect use</li><li>06 · Colour</li><li>07 · Typography</li>
-          <li>08 · Imagery and graphic elements</li><li>09 · Applications</li><li>10 · Logo files</li>
+          <li>02 · Logo</li><li>03 · Logo versions</li><li>04 · Stacked logo</li>
+          <li>05 · Clear space and minimum size</li><li>06 · Incorrect use</li><li>07 · Colour</li>
+          <li>08 · Typography</li><li>09 · Imagery and graphic elements</li><li>10 · Applications</li>
+          <li>11 · Logo files</li>
         </ol>
       </div>
     </div>`,
@@ -179,10 +183,28 @@ pages.push(
   ),
 );
 
+// Stacked logo
+pages.push(
+  page(
+    '04 · Stacked logo',
+    'Stacked logo.',
+    `<div class="mono-row">
+      <figure class="mono-tile light">${monoColor}<figcaption class="mono">Colour on white</figcaption></figure>
+      <figure class="mono-tile navy">${monoWhite}<figcaption class="mono">White on navy</figcaption></figure>
+      <figure class="mono-tile stone">${monoBlack}<figcaption class="mono">Black</figcaption></figure>
+    </div>
+    <div class="cols three">
+      <div><h3>Composition</h3><p>The symbol sits above the initials "D.H.P", set in Archivo ExtraBold with open letter-spacing. The initials are exactly as wide as the symbol and centred beneath it.</p></div>
+      <div><h3>When to use it</h3><p>Square or vertical spaces where the horizontal logo would be too small: social media profiles, helmet and vest stickers, stamps, vehicle doors, merchandise and signage on site fencing.</p></div>
+      <div><h3>Minimum size</h3><p>15 mm or 60 px wide. Keep a clear space equal to the height of the initials on every side. For favicons and very small sizes, use the symbol alone.</p></div>
+    </div>`,
+  ),
+);
+
 // Clear space / minimum size
 pages.push(
   page(
-    '04 · Clear space and minimum size',
+    '05 · Clear space and minimum size',
     'Clear space and minimum size.',
     `<div class="cols">
       <div class="clear-demo">
@@ -225,7 +247,7 @@ const misuse = [
 ];
 pages.push(
   page(
-    '05 · Incorrect use',
+    '06 · Incorrect use',
     'Incorrect use.',
     `<div class="grid3">${misuse
       .map(
@@ -239,7 +261,7 @@ pages.push(
 // Colour
 pages.push(
   page(
-    '06 · Colour',
+    '07 · Colour',
     'Colour palette.',
     `<div class="swatches">${palette.map(swatch).join('')}</div>
     <div class="ratio"><span style="flex:55;background:${C.navy}"></span><span style="flex:28;background:${C.stone};box-shadow: inset 0 0 0 1px ${C.line}"></span><span style="flex:10;background:#fff;box-shadow: inset 0 0 0 1px ${C.line}"></span><span style="flex:7;background:${C.green}"></span></div>
@@ -250,7 +272,7 @@ pages.push(
 // Typography
 pages.push(
   page(
-    '07 · Typography',
+    '08 · Typography',
     'Typography.',
     `<div class="cols">
       <div>
@@ -282,7 +304,7 @@ pages.push(
 // Imagery
 pages.push(
   page(
-    '08 · Imagery and graphic elements',
+    '09 · Imagery and graphic elements',
     'Imagery and graphic elements.',
     `<div class="cols">
       <div>
@@ -307,7 +329,7 @@ pages.push(
 // Applications
 pages.push(
   page(
-    '09 · Applications',
+    '10 · Applications',
     'Applications.',
     `<div class="apps">
       <div class="card-pair">
@@ -338,7 +360,7 @@ pages.push(
 // Files
 pages.push(
   page(
-    '10 · Logo files',
+    '11 · Logo files',
     'Logo files.',
     `<div class="cols">
       <div>
@@ -349,6 +371,7 @@ pages.push(
           <tr><td class="mono">png/dhp-logo-color.png</td><td>Office documents, presentations (transparent)</td></tr>
           <tr><td class="mono">*-white.*</td><td>Navy or dark photographic backgrounds</td></tr>
           <tr><td class="mono">*-black.*</td><td>Single-colour printing, stamps, engraving</td></tr>
+          <tr><td class="mono">dhp-monogram-*.*</td><td>Stacked logo with D.H.P: profiles, stickers, signage</td></tr>
           <tr><td class="mono">dhp-symbol-*.*</td><td>Small spaces, social avatars, watermarks</td></tr>
           <tr><td class="mono">dhp-app-icon.*</td><td>Favicon, app and WhatsApp Business profile</td></tr>
         </table>
@@ -425,6 +448,14 @@ svg { display: block; }
 .min-row svg { width: 100%; height: auto; }
 .min-row p { font-size: 7pt; margin-top: 3mm; text-transform: uppercase; }
 
+.mono-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+.mono-tile { margin: 0; height: 88mm; display: flex; align-items: center; justify-content: center; position: relative; }
+.mono-tile svg { height: 56mm; width: auto; }
+.mono-tile figcaption { position: absolute; left: 5mm; bottom: 4mm; font-size: 6.5pt; text-transform: uppercase; color: ${C.grey}; }
+.mono-tile.light { box-shadow: inset 0 0 0 0.3mm ${C.line}; }
+.mono-tile.navy { background: ${C.navy}; } .mono-tile.navy figcaption { color: rgba(255,255,255,.7); }
+.mono-tile.stone { background: ${C.stone}; }
+.mono-row + .cols.three { margin-top: 8mm; }
 .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
 .mis { margin: 0; position: relative; }
 .mis-art { height: 46mm; display: flex; align-items: center; justify-content: center; background: ${C.stone}; overflow: hidden; }

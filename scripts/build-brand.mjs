@@ -241,6 +241,32 @@ for (const [name, colors] of Object.entries(variants)) {
     1500,
   );
 }
+// Stacked monogram: symbol above "D.H.P", centred. Text width matches the symbol (40 units).
+const MONO = 'D.H.P';
+const monoProbe = textPath(f800, MONO, 0, 0, 10, 0.9);
+const monoSize = (10 * 40) / monoProbe.width;
+const monoTrack = 0.9 * (monoSize / 10);
+const monoBox = f800.charToGlyph('H').getPath(0, 0, monoSize).getBoundingBox();
+const capH = -monoBox.y1;
+const monoBaseline = 44 + 7 + capH;
+const mono = textPath(f800, MONO, 4, monoBaseline, monoSize, monoTrack);
+const STACK_PAD = 2;
+const stackH = Math.ceil(monoBaseline + STACK_PAD);
+const stacked = ({ structure, accent, text }) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${4 - STACK_PAD} ${9.8 - STACK_PAD} ${40 + 2 * STACK_PAD} ${stackH - 9.8 + STACK_PAD}">` +
+  mark(structure, accent) +
+  `<path d="${mono.d}" fill="${text}"/></svg>`;
+for (const [name, colors] of Object.entries(variants)) {
+  const logo = named(stacked(colors)).replace('D.H. PRESTATION, S.L.</title>', 'D.H.P</title>');
+  fs.writeFileSync(out(`brand/logo/svg/dhp-monogram-${name}.svg`), logo);
+  const [, , , vw, vh] = /viewBox="([\d.-]+) ([\d.-]+) ([\d.]+) ([\d.]+)"/.exec(logo).map(Number);
+  await png(
+    logo.replace('<svg ', `<svg width="${vw}" height="${vh}" `),
+    `brand/logo/png/dhp-monogram-${name}.png`,
+    1500,
+  );
+}
+
 fs.writeFileSync(out('brand/logo/svg/dhp-app-icon.svg'), tile());
 await png(tile(), 'brand/logo/png/dhp-app-icon.png', 1024);
 

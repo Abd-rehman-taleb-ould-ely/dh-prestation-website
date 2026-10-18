@@ -123,14 +123,20 @@ for (const locale of LOCALES) {
         await expect(link).toHaveAttribute('rel', /noopener/);
       }
 
-      // General message on the main CTA, service-specific messages on each service card.
+      // General message on the main CTA; service-specific messages on the contact shortcuts.
       const main = new URL((await contact.locator('a.wa-main').getAttribute('href'))!);
       expect(main.searchParams.get('text')).toBe(dict.contact.whatsappMessage);
-      for (const id of SERVICE_IDS) {
-        const href = await page
-          .locator(`#${serviceAnchor(id)} a[href^="${WA}"]`)
-          .getAttribute('href');
+      const shortcuts = contact.locator('.shortcuts a');
+      await expect(shortcuts).toHaveCount(SERVICE_IDS.length);
+      for (const [i, id] of SERVICE_IDS.entries()) {
+        await expect(shortcuts.nth(i)).toHaveText(new RegExp(dict.services.items[id].short));
+        const href = await shortcuts.nth(i).getAttribute('href');
         expect(new URL(href!).searchParams.get('text')).toBe(dict.services.items[id].whatsapp);
+      }
+
+      // WhatsApp buttons are limited to the header, hero, floating button and contact section.
+      for (const id of SERVICE_IDS) {
+        await expect(page.locator(`#${serviceAnchor(id)} a[href^="${WA}"]`)).toHaveCount(0);
       }
     });
 

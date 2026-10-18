@@ -23,7 +23,7 @@ const fr: Dictionary = {
 
   a11y: {
     skipToContent: 'Aller au contenu principal',
-    homeLink: 'D.H. PRESTATION, S.L. — accueil',
+    homeLink: 'Accueil : D.H. PRESTATION, S.L.',
     primaryNav: 'Navigation principale',
     footerNav: 'Navigation du pied de page',
     openMenu: 'Ouvrir le menu',
@@ -66,7 +66,6 @@ const fr: Dictionary = {
       'Nous intervenons dans le projet de l’entreprise principale pour réaliser des travaux de montage et d’installation avec des équipes organisées et une coordination directe sur chantier. Le périmètre de chaque collaboration est défini avec le client avant le démarrage.',
     otherTitle: 'Autres activités',
     otherIntro: 'Activités complémentaires de l’entreprise.',
-    cta: 'Demander sur WhatsApp',
     items: {
       structures: {
         title: 'Montage de structures photovoltaïques',

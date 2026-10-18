@@ -1,10 +1,7 @@
 ---
-import Icon from './Icon.astro';
 import Photo from './Photo.astro';
-import { company } from '../config/company';
 import { serviceAnchor, type ServiceDefinition } from '../data/services';
 import { t, type Locale } from '../i18n';
-import { whatsappHref } from '../lib/whatsapp';
 
 interface Props {
   service: ServiceDefinition;
@@ -40,19 +37,6 @@ const Heading = variant === 'compact' ? 'h4' : 'h3';
       {copy.title}
     </Heading>
     <p class="card-text">{copy.description}</p>
-    <a
-      class="text-link card-cta"
-      href={whatsappHref(company.whatsapp, copy.whatsapp)}
-      target="_blank"
-      rel="noopener"
-    >
-      <Icon name="whatsapp" />
-      <span>{dict.services.cta}</span>
-      <span class="visually-hidden">
-        : {copy.title} ({dict.a11y.opensWhatsApp})
-      </span>
-      <Icon name="arrowRight" class="arrow" />
-    </a>
   </div>
 </article>
 
@@ -121,10 +105,6 @@ const Heading = variant === 'compact' ? 'h4' : 'h3';
     margin-top: 0.85rem;
     max-width: 38rem;
     color: var(--ink-2);
-  }
-
-  .card-cta {
-    margin-top: 1rem;
   }
 
   /* Wide: image and text side by side on large screens */

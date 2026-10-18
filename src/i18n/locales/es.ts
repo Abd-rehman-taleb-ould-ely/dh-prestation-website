@@ -23,7 +23,7 @@ const es: Dictionary = {
 
   a11y: {
     skipToContent: 'Saltar al contenido principal',
-    homeLink: 'D.H. PRESTATION, S.L. — inicio',
+    homeLink: 'Inicio: D.H. PRESTATION, S.L.',
     primaryNav: 'Navegación principal',
     footerNav: 'Navegación del pie de página',
     openMenu: 'Abrir menú',
@@ -66,7 +66,6 @@ const es: Dictionary = {
       'Nos integramos en el proyecto del contratista principal para ejecutar trabajos de montaje e instalación con equipos organizados y una coordinación directa en obra. El alcance de cada colaboración se define con el cliente antes del inicio.',
     otherTitle: 'Otras actividades',
     otherIntro: 'Actividades complementarias de la empresa.',
-    cta: 'Consultar por WhatsApp',
     items: {
       structures: {
         title: 'Montaje de estructuras fotovoltaicas',

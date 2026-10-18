@@ -23,7 +23,7 @@ const en: Dictionary = {
 
   a11y: {
     skipToContent: 'Skip to main content',
-    homeLink: 'D.H. PRESTATION, S.L. — home',
+    homeLink: 'Home: D.H. PRESTATION, S.L.',
     primaryNav: 'Main navigation',
     footerNav: 'Footer navigation',
     openMenu: 'Open menu',
@@ -66,7 +66,6 @@ const en: Dictionary = {
       'We work within the main contractor’s project to carry out assembly and installation work with organised teams and direct coordination on site. The scope of each engagement is agreed with the client before work starts.',
     otherTitle: 'Other activities',
     otherIntro: 'Complementary business activities.',
-    cta: 'Ask on WhatsApp',
     items: {
       structures: {
         title: 'Photovoltaic mounting structures',

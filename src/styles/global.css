@@ -1,5 +1,5 @@
 /* ==========================================================================
-   D.H. PRESTATION — design tokens and base styles
+   D.H. PRESTATION: design tokens and base styles
    ========================================================================== */
 
 :root {
@@ -206,13 +206,6 @@ p {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--green-700);
-}
-
-.eyebrow::before {
-  content: '';
-  width: 28px;
-  height: 2px;
-  background: currentColor;
 }
 
 .on-dark .eyebrow {

@@ -114,7 +114,6 @@ export interface Dictionary {
     intro: string;
     otherTitle: string;
     otherIntro: string;
-    cta: string;
     items: Record<ServiceId, ServiceCopy>;
   };
 

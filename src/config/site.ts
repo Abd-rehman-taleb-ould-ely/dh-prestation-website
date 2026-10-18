@@ -3,7 +3,7 @@
  * hreflang, sitemap and Open Graph URL is derived from it.
  */
 export const site = {
-  url: 'https://dhp.es',
+  url: 'https://dhp-solar.site',
   themeColor: '#0B1F33',
   ogImage: '/og-image.jpg',
 

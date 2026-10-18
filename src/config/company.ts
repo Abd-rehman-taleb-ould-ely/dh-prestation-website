@@ -30,9 +30,10 @@ export const company = {
   /** Phone numbers in E.164 format. Display formatting is derived in src/lib/contact.ts. */
   phones: ['+34624817846', '+34672546266'],
   whatsapp: '+34687032956',
+  /** TODO(confirm): mailboxes must be created on dhp-solar.site before publication. */
   emails: {
-    general: 'info@dhp.es',
-    management: 'gerencia@dhp.es',
+    general: 'info@dhp-solar.site',
+    management: 'gerencia@dhp-solar.site',
   },
 
   /**

@@ -1,6 +1,6 @@
 # D.H. PRESTATION, S.L. — corporate website
 
-Static, multilingual (ES / EN / FR) B2B website for **D.H. PRESTATION, S.L.**, prepared for publication at **https://dhp.es**.
+Static, multilingual (ES / EN / FR) B2B website for **D.H. PRESTATION, S.L.**, prepared for publication at **https://dhp-solar.site**.
 
 The site presents the company's photovoltaic structure and tracker assembly, module installation, electrical installation and subcontracting services to EPC contractors, developers and construction companies. WhatsApp is the main conversion channel. There is no backend, database, CMS, form, cookie, tracker or third-party script.
 
@@ -17,7 +17,7 @@ The site presents the company's photovoltaic structure and tracker assembly, mod
 - [Images](#images)
 - [Brand assets](#brand-assets)
 - [Quality checks](#quality-checks)
-- [Deployment and the dhp.es domain](#deployment-and-the-dhpes-domain)
+- [Deployment and the dhp-solar.site domain](#deployment-and-the-dhp-solarsite-domain)
 - [Privacy and external services](#privacy-and-external-services)
 - [Pre-publication checklist](#pre-publication-checklist)
 
@@ -164,7 +164,7 @@ The logo is an original mark: three photovoltaic module cells tilted like a trac
 
 Manual checks are still recommended before launch: a screen reader pass (VoiceOver/NVDA), real iOS/Android devices, and confirming that WhatsApp opens correctly on phones and on WhatsApp Web.
 
-## Deployment and the dhp.es domain
+## Deployment and the dhp-solar.site domain
 
 The build output (`dist/`) is a folder of static files. Any static host works. Build settings are the same everywhere:
 
@@ -178,13 +178,13 @@ Security headers are pre-configured in `public/_headers` (Netlify, Cloudflare Pa
 
 1. Push this repository to GitHub and import it into the host. Use the build settings above.
 2. Check the generated preview URL (`*.pages.dev`, `*.netlify.app`, `*.vercel.app`).
-3. In the host's **Domains** settings, add `dhp.es` and `www.dhp.es`. Make `dhp.es` the primary domain and redirect `www` to it, because canonical URLs use `https://dhp.es`.
-4. At the registrar or DNS provider for `dhp.es`, create the records the host shows you. Typically these are:
-   - apex `dhp.es`: an `A`/`ALIAS`/`ANAME` record (or CNAME flattening) to the host's target,
+3. In the host's **Domains** settings, add `dhp-solar.site` and `www.dhp-solar.site`. Make `dhp-solar.site` the primary domain and redirect `www` to it, because canonical URLs use `https://dhp-solar.site`.
+4. At the registrar or DNS provider for `dhp-solar.site`, create the records the host shows you. Typically these are:
+   - apex `dhp-solar.site`: an `A`/`ALIAS`/`ANAME` record (or CNAME flattening) to the host's target,
    - `www`: a `CNAME` to the host's target.
      Alternatively, delegate the whole zone's nameservers to the host (e.g. Cloudflare).
 5. HTTPS: all three hosts issue and renew a free Let's Encrypt certificate automatically once DNS resolves. Enable **"Force HTTPS"** or **"Always use HTTPS"**.
-6. **Do not change the `MX` records** (or the SPF/DKIM `TXT` records) of `dhp.es` when editing DNS. They deliver email to `info@dhp.es` and `gerencia@dhp.es`.
+6. **Email:** the site lists `info@dhp-solar.site` and `gerencia@dhp-solar.site`. Create these mailboxes with an email provider (e.g. the registrar's mail service, Google Workspace or Microsoft 365) and add the `MX`, SPF and DKIM records it gives you. Once email works, don't remove those records when changing the website's DNS.
 
 ### Option B: traditional hosting (Apache/Nginx, e.g. a Spanish hosting plan)
 
@@ -192,8 +192,8 @@ Upload the **contents** of `dist/` to the web root (e.g. `public_html`). Then en
 
 ### After going live
 
-- Open `https://dhp.es/`, `/en/` and `/fr/` and check that the certificate is valid.
-- Register the domain in **Google Search Console** and **Bing Webmaster Tools**, and submit `https://dhp.es/sitemap.xml`.
+- Open `https://dhp-solar.site/`, `/en/` and `/fr/` and check that the certificate is valid.
+- Register the domain in **Google Search Console** and **Bing Webmaster Tools**, and submit `https://dhp-solar.site/sitemap.xml`.
 - Test social previews with a link-preview tool (LinkedIn Post Inspector, etc.).
 - If the domain ever changes, edit `url` in `src/config/site.ts` and rebuild.
 
@@ -214,7 +214,7 @@ Everything below must be confirmed by D.H. PRESTATION, S.L. (and a legal adviser
 - [ ] Legal name, NIF `B27656149` and registered address are correct as displayed.
 - [ ] Phone numbers +34 624 817 846 and +34 672 546 266 should be public, and are answered under the company name.
 - [ ] WhatsApp +34 687 032 956 is an active (preferably WhatsApp Business) account that is monitored.
-- [ ] Mailboxes `info@dhp.es` and `gerencia@dhp.es` exist and receive mail (MX records for dhp.es are configured).
+- [ ] Mailboxes `info@dhp-solar.site` and `gerencia@dhp-solar.site` are created and receive mail (MX records for `dhp-solar.site` are configured). Send a test message to each before launch.
 - [ ] Workforce figures: approximately **20–25 professionals** and an **own site manager**. Confirm in writing, then set `confirmed: true` in `src/config/company.ts`. Both are hidden until then.
 - [ ] Mercantile Registry details (Registro Mercantil de Sevilla: tomo, folio, hoja, inscripción) are filled in `company.registry`. LSSI-CE art. 10 requires them in the legal notice.
 - [ ] Service descriptions match the work the company actually performs and wants to offer. In particular, confirm the scope of "Instalaciones eléctricas" and whether it includes any regulated work, and the real activity level of construction/real estate development and machinery trading.
@@ -239,7 +239,7 @@ Everything below must be confirmed by D.H. PRESTATION, S.L. (and a legal adviser
 
 **Domain and hosting**
 
-- [ ] Ownership of `dhp.es` and access to its DNS are confirmed.
+- [ ] Ownership of `dhp-solar.site` and access to its DNS are confirmed.
 - [ ] Hosting provider is chosen and the deployment is configured (see above).
 - [ ] HTTPS is active, `www` redirects to the apex domain, and email DNS records are untouched.
 - [ ] Sitemap is submitted to Search Console and Bing Webmaster Tools.

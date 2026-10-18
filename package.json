@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.0.0",
   "private": true,
-  "description": "Corporate website for D.H. PRESTATION, S.L. — https://dhp.es",
+  "description": "Corporate website for D.H. PRESTATION, S.L. — https://dhp-solar.site",
   "engines": {
     "node": ">=22.22.0"
   },

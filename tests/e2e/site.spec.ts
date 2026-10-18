@@ -1,6 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { company } from '../../src/config/company';
+import { site } from '../../src/config/site';
 import { LOCALES, ROUTES, SERVICE_IDS, t, type Locale } from '../../src/i18n';
 import { serviceAnchor } from '../../src/data/services';
 
@@ -41,16 +42,16 @@ for (const locale of LOCALES) {
       );
       await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
         'href',
-        `https://dhp.es${ROUTES.home[locale]}`,
+        `${site.url}${ROUTES.home[locale]}`,
       );
       for (const l of LOCALES) {
         await expect(
           page.locator(`link[rel="alternate"][hreflang="${t(l).htmlLang}"]`),
-        ).toHaveAttribute('href', `https://dhp.es${ROUTES.home[l]}`);
+        ).toHaveAttribute('href', `${site.url}${ROUTES.home[l]}`);
       }
       await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute(
         'href',
-        'https://dhp.es/',
+        `${site.url}/`,
       );
       await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute(
         'content',
@@ -104,8 +105,8 @@ for (const locale of LOCALES) {
       for (const [tel] of [['tel:+34624817846'], ['tel:+34672546266']]) {
         await expect(contact.locator(`a[href="${tel}"]`)).toHaveCount(1);
       }
-      await expect(contact.locator('a[href="mailto:info@dhp.es"]')).toHaveCount(1);
-      await expect(contact.locator('a[href="mailto:gerencia@dhp.es"]')).toHaveCount(1);
+      await expect(contact.locator('a[href="mailto:info@dhp-solar.site"]')).toHaveCount(1);
+      await expect(contact.locator('a[href="mailto:gerencia@dhp-solar.site"]')).toHaveCount(1);
       await expect(contact).toContainText('Calle María del Rocío 83 B');
       await expect(contact).toContainText('41130 La Puebla del Río');
       await expect(contact).toContainText(company.nif);
@@ -304,12 +305,12 @@ test('every internal link resolves', async ({ page, request }) => {
 
 test('robots.txt, sitemap and manifest are served', async ({ request }) => {
   const robots = await (await request.get('/robots.txt')).text();
-  expect(robots).toContain('Sitemap: https://dhp.es/sitemap.xml');
+  expect(robots).toContain(`Sitemap: ${site.url}/sitemap.xml`);
 
   const sitemap = await (await request.get('/sitemap.xml')).text();
   for (const routes of Object.values(ROUTES)) {
     for (const path of Object.values(routes))
-      expect(sitemap).toContain(`<loc>https://dhp.es${path}</loc>`);
+      expect(sitemap).toContain(`<loc>${site.url}${path}</loc>`);
   }
   expect(sitemap).toContain('hreflang="x-default"');
 

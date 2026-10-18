@@ -36,8 +36,8 @@ describe('contact helpers', () => {
   it('build tel: and mailto: links', () => {
     expect(telHref('+34 624 817 846')).toBe('tel:+34624817846');
     expect(company.phones.map(telHref)).toEqual(['tel:+34624817846', 'tel:+34672546266']);
-    expect(mailtoHref(company.emails.general)).toBe('mailto:info@dhp.es');
-    expect(mailtoHref(company.emails.management)).toBe('mailto:gerencia@dhp.es');
+    expect(mailtoHref(company.emails.general)).toBe('mailto:info@dhp-solar.site');
+    expect(mailtoHref(company.emails.management)).toBe('mailto:gerencia@dhp-solar.site');
   });
 
   it('format the registered address', () => {

@@ -1,0 +1,236 @@
+---
+import Photo from '../Photo.astro';
+import { company } from '../../config/company';
+import { t, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+
+// Workforce facts are only published once confirmed in src/config/company.ts.
+const showTeamSize = company.team.size.confirmed;
+const showSiteManager = company.team.ownSiteManager.confirmed && company.team.ownSiteManager.value;
+---
+
+<section id={dict.anchors.company} class="section section--stone" aria-labelledby="company-title">
+  <div class="container">
+    <div class="intro">
+      <figure class="media" data-reveal>
+        <Photo
+          id="company"
+          locale={locale}
+          sizes="(min-width: 1328px) 620px, (min-width: 900px) 48vw, 100vw"
+        />
+        <figcaption class="facts on-dark">
+          {showTeamSize && (
+            <p class="fact">
+              <span class="fact-value">{company.team.size.value}</span>
+              <span class="fact-label">{dict.company.teamSize}</span>
+            </p>
+          )}
+          {showSiteManager && <p class="fact-line">{dict.company.siteManager}</p>}
+          <p class="fact-line location">
+            <span class="mono">{dict.contact.address}</span>
+            {company.address.locality} ({company.address.region})
+          </p>
+        </figcaption>
+      </figure>
+
+      <div class="copy" data-reveal>
+        <p class="eyebrow">{dict.company.eyebrow}</p>
+        <h2 id="company-title">{dict.company.title}</h2>
+        {dict.company.paragraphs.map((p, i) => (
+          <p class:list={['para', { lead: i === 0 }]}>{p}</p>
+        ))}
+      </div>
+    </div>
+
+    <div class="qualities">
+      <h3 class="qualities-title mono">{dict.company.qualitiesTitle}</h3>
+      <ol role="list">
+        {dict.company.qualities.map((q, i) => (
+          <li data-reveal style={`--reveal-delay: ${i * 70}ms`}>
+            <span class="num mono" aria-hidden="true">
+              0{i + 1}
+            </span>
+            <h4>{q.title}</h4>
+            <p>{q.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .intro {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 1.5rem;
+    }
+
+    .media {
+      grid-column: 1 / span 6;
+    }
+
+    .copy {
+      grid-column: 8 / -1;
+    }
+  }
+
+  .media {
+    position: relative;
+    padding-bottom: 2.5rem;
+  }
+
+  .media :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .facts {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    gap: 0.75rem;
+    width: min(320px, 82%);
+    padding: 1.5rem 1.75rem;
+    background: var(--navy-900);
+  }
+
+  @media (min-width: 900px) {
+    .facts {
+      right: -1.5rem;
+    }
+  }
+
+  .fact {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .fact-value {
+    font-size: 2.75rem;
+    font-weight: 700;
+    font-stretch: 112%;
+    line-height: 1;
+    color: var(--green-400);
+  }
+
+  .fact-label,
+  .fact-line {
+    font-size: 0.9375rem;
+    color: var(--on-dark-2);
+  }
+
+  .location {
+    display: grid;
+    gap: 0.25rem;
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .location .mono {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-400);
+  }
+
+  h2 {
+    margin-top: 1.25rem;
+  }
+
+  .para {
+    margin-top: 1.5rem;
+    color: var(--ink-2);
+    max-width: 36rem;
+  }
+
+  .qualities {
+    margin-top: clamp(4rem, 8vw, 6rem);
+  }
+
+  .qualities-title {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .qualities ol {
+    display: grid;
+    gap: 0 1.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .qualities li {
+    display: grid;
+    grid-template-columns: 2.75rem 1fr;
+    column-gap: 0.5rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .qualities li > :not(.num) {
+    grid-column: 2;
+  }
+
+  .num {
+    grid-row: span 2;
+    font-size: 0.8125rem;
+    color: var(--green-700);
+    padding-top: 0.2rem;
+  }
+
+  h4 {
+    font-size: 1.0625rem;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+
+  .qualities p {
+    margin-top: 0.4rem;
+    font-size: 0.9375rem;
+    color: var(--ink-2);
+  }
+
+  @media (min-width: 700px) {
+    .qualities ol {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .qualities ol {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .qualities li {
+      grid-template-columns: 1fr;
+      border-top-width: 2px;
+      border-top-color: var(--navy-900);
+    }
+
+    .qualities li > :not(.num) {
+      grid-column: 1;
+    }
+
+    .num {
+      grid-row: auto;
+      margin-bottom: 1rem;
+    }
+  }
+</style>

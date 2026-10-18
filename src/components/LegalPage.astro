@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from './Icon.astro';
+import { company } from '../config/company';
+import { site } from '../config/site';
+import { pathFor, t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  page: 'legalNotice' | 'privacy';
+}
+
+const { locale, page } = Astro.props;
+const dict = t(locale);
+const doc = page === 'legalNotice' ? dict.legal.notice(company) : dict.legal.privacy(company);
+
+// TODO(legal): update when the texts are reviewed.
+const updated = new Date('2026-10-18');
+const updatedText = new Intl.DateTimeFormat(dict.htmlLang, { dateStyle: 'long' }).format(updated);
+---
+
+<BaseLayout
+  locale={locale}
+  page={page}
+  title={`${doc.title} | ${company.legalName}`}
+  description={doc.metaDescription}
+>
+  <article class="legal">
+    <div class="container narrow">
+      <a class="back text-link" href={pathFor('home', locale)}>
+        <Icon name="arrowRight" class="back-arrow" />
+        {dict.legal.backHome}
+      </a>
+      <h1>{doc.title}</h1>
+      <p class="updated">
+        {doc.updatedLabel}: <time datetime={updated.toISOString().slice(0, 10)}>{updatedText}</time>
+      </p>
+
+      {site.legalDraft && (
+        <p class="draft" role="note">
+          <Icon name="info" size={20} />
+          <span>{dict.legal.draftNotice}</span>
+        </p>
+      )}
+
+      {doc.sections.map((section) => (
+        <section>
+          <h2>{section.heading}</h2>
+          {section.paragraphs.map((p) => (
+            <p>{p}</p>
+          ))}
+          {section.list && (
+            <ul>
+              {section.list.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ))}
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal {
+    padding-block: calc(var(--header-h) + clamp(2.5rem, 6vw, 4.5rem)) var(--section-y);
+    background: var(--white);
+  }
+
+  .narrow {
+    max-width: calc(46rem + 2 * var(--gutter));
+  }
+
+  .back :global(.back-arrow) {
+    transform: rotate(180deg);
+  }
+
+  h1 {
+    margin-top: 1.5rem;
+    font-size: var(--step-3);
+  }
+
+  .updated {
+    margin-top: 1rem;
+    color: var(--ink-3);
+    font-size: 0.9375rem;
+  }
+
+  .draft {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid #b7791f;
+    background: #fdf6e7;
+    color: #5c3d0b;
+    font-size: 0.9375rem;
+  }
+
+  .draft :global(svg) {
+    flex: none;
+    margin-top: 0.15rem;
+  }
+
+  section {
+    margin-top: 2.75rem;
+  }
+
+  h2 {
+    font-size: var(--step-2);
+    font-stretch: 104%;
+  }
+
+  section p,
+  section ul {
+    margin-top: 1rem;
+    color: var(--ink-2);
+  }
+
+  section ul {
+    padding-left: 1.25rem;
+  }
+
+  section li + li {
+    margin-top: 0.35rem;
+  }
+</style>

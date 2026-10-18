@@ -1,0 +1,292 @@
+---
+import Icon from './Icon.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import Logo from './Logo.astro';
+import { company } from '../config/company';
+import { pathFor, sectionHref, t, type Locale, type PageKey } from '../i18n';
+import { whatsappHref } from '../lib/whatsapp';
+
+interface Props {
+  locale: Locale;
+  page?: PageKey;
+}
+
+const { locale, page } = Astro.props;
+const dict = t(locale);
+const onHome = page === 'home';
+
+const links = [
+  { label: dict.nav.services, href: sectionHref(locale, 'services', onHome) },
+  { label: dict.nav.company, href: sectionHref(locale, 'company', onHome) },
+  { label: dict.nav.capabilities, href: sectionHref(locale, 'capabilities', onHome) },
+  { label: dict.nav.contact, href: sectionHref(locale, 'contact', onHome) },
+];
+const wa = whatsappHref(company.whatsapp, dict.contact.whatsappMessage);
+---
+
+<header class="site-header on-dark" data-header>
+  <div class="container bar">
+    <a class="brand" href={pathFor('home', locale)} aria-label={dict.a11y.homeLink}>
+      <Logo class="brand-logo" />
+    </a>
+
+    <nav class="desktop-nav" aria-label={dict.a11y.primaryNav}>
+      <ul role="list">
+        {links.map((l) => (
+          <li>
+            <a href={l.href}>{l.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <LanguageSwitcher locale={locale} page={page} />
+      <a class="btn btn--primary header-cta" href={wa} target="_blank" rel="noopener">
+        <Icon name="whatsapp" />
+        <span>{dict.nav.whatsapp}</span>
+        <span class="visually-hidden">({dict.a11y.opensWhatsApp})</span>
+      </a>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+        data-label-open={dict.a11y.openMenu}
+        data-label-close={dict.a11y.closeMenu}
+      >
+        <Icon name="menu" class="icon-open" />
+        <Icon name="close" class="icon-close" />
+        <span class="visually-hidden" data-menu-label>
+          {dict.a11y.openMenu}
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-panel" id="mobile-menu" data-menu-panel data-open="false">
+    <nav class="container" aria-label={dict.a11y.primaryNav}>
+      <ul role="list" class="mobile-links">
+        {links.map((l, i) => (
+          <li>
+            <a href={l.href} data-menu-link>
+              <span class="mono" aria-hidden="true">
+                0{i + 1}
+              </span>
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a class="btn btn--primary btn--lg mobile-cta" href={wa} target="_blank" rel="noopener">
+        <Icon name="whatsapp" />
+        {dict.contact.whatsappCta}
+        <span class="visually-hidden">({dict.a11y.opensWhatsApp})</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  import { initHeader } from '../scripts/header';
+  initHeader();
+</script>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    background: rgb(7 20 35 / 0.94);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color 0.3s var(--ease),
+      border-color 0.3s var(--ease);
+  }
+
+  .site-header:global(.is-scrolled) {
+    background: rgb(7 20 35 / 0.96);
+    border-bottom-color: var(--line-dark);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    height: var(--header-h);
+  }
+
+  .brand {
+    display: inline-flex;
+    flex: none;
+    color: var(--white);
+  }
+
+  .brand :global(.brand-logo) {
+    height: 26px;
+    --logo-accent: var(--green-400);
+  }
+
+  @media (min-width: 400px) {
+    .brand :global(.brand-logo) {
+      height: 30px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .brand :global(.brand-logo) {
+      height: 34px;
+    }
+  }
+
+  .desktop-nav {
+    display: none;
+    margin-inline: auto;
+  }
+
+  .desktop-nav ul {
+    display: flex;
+    gap: clamp(1rem, 2vw, 2.25rem);
+  }
+
+  .desktop-nav a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--on-dark-2);
+    text-decoration: none;
+    transition: color 0.2s var(--ease);
+  }
+
+  .desktop-nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    height: 2px;
+    background: var(--green-400);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s var(--ease);
+  }
+
+  .desktop-nav a:hover {
+    color: var(--white);
+  }
+
+  .desktop-nav a:hover::after {
+    transform: scaleX(1);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+
+  .header-cta {
+    display: none;
+    min-height: 44px;
+    padding-inline: 1.1rem;
+    font-size: 0.9375rem;
+  }
+
+  .menu-toggle {
+    display: none;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--line-dark);
+    border-radius: var(--radius);
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .menu-toggle :global(.icon-close) {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded='true'] :global(.icon-open) {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded='true'] :global(.icon-close) {
+    display: block;
+  }
+
+  :global(.js) .menu-toggle {
+    display: grid;
+  }
+
+  /* Mobile panel: static fallback without JS, toggled panel with JS */
+  .mobile-panel {
+    border-top: 1px solid var(--line-dark);
+    padding-block: 0.5rem 1.5rem;
+  }
+
+  :global(.js) .mobile-panel {
+    position: absolute;
+    inset: var(--header-h) 0 auto;
+    height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
+    background: var(--navy-950);
+    padding-block: 1rem 2rem;
+  }
+
+  :global(.js) .mobile-panel[data-open='false'] {
+    display: none;
+  }
+
+  .mobile-links a {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid var(--line-dark);
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-stretch: 108%;
+    text-decoration: none;
+  }
+
+  .mobile-links .mono {
+    font-size: 0.75rem;
+    color: var(--green-400);
+  }
+
+  .mobile-cta {
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .header-cta {
+      display: inline-flex;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .desktop-nav {
+      display: block;
+    }
+
+    .actions {
+      margin-left: 0;
+    }
+
+    :global(.js) .menu-toggle,
+    .mobile-panel,
+    :global(.js) .mobile-panel {
+      display: none;
+    }
+  }
+</style>

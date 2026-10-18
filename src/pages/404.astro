@@ -1,0 +1,76 @@
+---
+/*
+ * Static hosts serve a single 404 page. It is shown in Spanish (default) with direct
+ * links to the English and French home pages.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { LOCALES, pathFor, t } from '../i18n';
+
+const dict = t('es');
+---
+
+<BaseLayout
+  locale="es"
+  title={`${dict.notFound.title} | D.H. PRESTATION, S.L.`}
+  description={dict.notFound.text}
+  noindex
+>
+  <section class="nf">
+    <div class="container">
+      <p class="code mono" aria-hidden="true">
+        404
+      </p>
+      <ul role="list" class="messages">
+        {LOCALES.map((l, i) => {
+          const Heading = i === 0 ? 'h1' : 'h2';
+          return (
+            <li lang={t(l).htmlLang}>
+              <Heading class="title">{t(l).notFound.title}</Heading>
+              <p>{t(l).notFound.text}</p>
+              <a class="text-link" href={pathFor('home', l)}>
+                {t(l).notFound.cta}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    padding-block: calc(var(--header-h) + 4rem) var(--section-y);
+  }
+
+  .code {
+    font-size: 0.875rem;
+    color: var(--green-700);
+    letter-spacing: 0.2em;
+  }
+
+  .messages {
+    display: grid;
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .messages {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .title {
+    font-size: var(--step-2);
+  }
+
+  .messages p {
+    margin-top: 0.75rem;
+    color: var(--ink-2);
+  }
+
+  .messages a {
+    margin-top: 0.5rem;
+  }
+</style>

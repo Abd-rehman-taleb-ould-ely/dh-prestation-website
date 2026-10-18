@@ -1,0 +1,10 @@
+dist
+.astro
+node_modules
+package-lock.json
+public/brand/*.svg
+public/favicon.svg
+src/assets/brand
+test-results
+playwright-report
+public/_headers

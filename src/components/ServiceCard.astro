@@ -1,0 +1,176 @@
+---
+import Icon from './Icon.astro';
+import Photo from './Photo.astro';
+import { company } from '../config/company';
+import { serviceAnchor, type ServiceDefinition } from '../data/services';
+import { t, type Locale } from '../i18n';
+import { whatsappHref } from '../lib/whatsapp';
+
+interface Props {
+  service: ServiceDefinition;
+  locale: Locale;
+  index: number;
+  variant?: 'standard' | 'wide' | 'compact';
+  sizes: string;
+  class?: string;
+}
+
+const { service, locale, index, variant = 'standard', sizes, class: className } = Astro.props;
+const dict = t(locale);
+const copy = dict.services.items[service.id];
+const titleId = `${serviceAnchor(service.id)}-title`;
+// Secondary activities sit under their own h3 sub-heading.
+const Heading = variant === 'compact' ? 'h4' : 'h3';
+---
+
+<article
+  id={serviceAnchor(service.id)}
+  class:list={['card', `card--${variant}`, className]}
+  aria-labelledby={titleId}
+  data-reveal
+>
+  <div class="card-media">
+    <Photo id={service.image} locale={locale} sizes={sizes} />
+  </div>
+  <div class="card-body">
+    <p class="card-index mono" aria-hidden="true">
+      {String(index).padStart(2, '0')}
+    </p>
+    <Heading class="card-title" id={titleId}>
+      {copy.title}
+    </Heading>
+    <p class="card-text">{copy.description}</p>
+    <a
+      class="text-link card-cta"
+      href={whatsappHref(company.whatsapp, copy.whatsapp)}
+      target="_blank"
+      rel="noopener"
+    >
+      <Icon name="whatsapp" />
+      <span>{dict.services.cta}</span>
+      <span class="visually-hidden">
+        : {copy.title} ({dict.a11y.opensWhatsApp})
+      </span>
+      <Icon name="arrowRight" class="arrow" />
+    </a>
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+
+  .card-media {
+    position: relative;
+    overflow: hidden;
+    background: var(--stone-100);
+    height: clamp(240px, 28vw, 400px);
+  }
+
+  .card-media :global(picture),
+  .card-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s var(--ease);
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .card:hover .card-media :global(img) {
+      transform: scale(1.035);
+    }
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 1.5rem;
+  }
+
+  .card-index {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    font-size: 0.75rem;
+    color: var(--green-700);
+  }
+
+  .card-index::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .card-title {
+    margin-top: 1rem;
+    font-weight: 650;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    font-size: var(--step-2);
+    font-stretch: 104%;
+  }
+
+  .card-text {
+    margin-top: 0.85rem;
+    max-width: 38rem;
+    color: var(--ink-2);
+  }
+
+  .card-cta {
+    margin-top: 1rem;
+  }
+
+  /* Wide: image and text side by side on large screens */
+  @media (min-width: 900px) {
+    .card--wide {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 1.5rem;
+      align-items: end;
+    }
+
+    .card--wide .card-media {
+      grid-column: 1 / span 7;
+      height: clamp(320px, 32vw, 440px);
+    }
+
+    .card--wide .card-body {
+      grid-column: 8 / -1;
+      padding-top: 0;
+    }
+  }
+
+  /* Compact: secondary activities */
+  .card--compact .card-media {
+    height: clamp(200px, 22vw, 260px);
+  }
+
+  .card--compact .card-title {
+    font-size: var(--step-1);
+  }
+
+  @media (min-width: 640px) {
+    .card--compact {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .card--compact .card-media {
+      height: 100%;
+      min-height: 200px;
+    }
+
+    .card--compact .card-body {
+      padding-top: 0;
+    }
+  }
+</style>

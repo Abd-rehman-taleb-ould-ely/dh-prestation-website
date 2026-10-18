@@ -1,0 +1,223 @@
+---
+import Icon from './Icon.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import Logo from './Logo.astro';
+import { company } from '../config/company';
+import { site } from '../config/site';
+import { CORE_SERVICES, SECONDARY_SERVICES, serviceAnchor } from '../data/services';
+import { pathFor, t, type Locale, type PageKey } from '../i18n';
+import { formatAddress, formatPhone, mailtoHref, telHref } from '../lib/contact';
+import { whatsappHref } from '../lib/whatsapp';
+
+interface Props {
+  locale: Locale;
+  page?: PageKey;
+}
+
+const { locale, page } = Astro.props;
+const dict = t(locale);
+const home = pathFor('home', locale);
+const prefix = page === 'home' ? '' : home;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer on-dark">
+  <div class="container">
+    <div class="top">
+      <div class="about">
+        <a class="brand" href={home} aria-label={dict.a11y.homeLink}>
+          <Logo class="footer-logo" />
+        </a>
+        <p>{dict.footer.description}</p>
+      </div>
+
+      <nav class="col" aria-label={dict.a11y.footerNav}>
+        <h2 class="col-title">{dict.footer.servicesTitle}</h2>
+        <ul role="list">
+          {[...CORE_SERVICES, ...SECONDARY_SERVICES].map((s) => (
+            <li>
+              <a href={`${prefix}#${serviceAnchor(s.id)}`}>{dict.services.items[s.id].short}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="col">
+        <h2 class="col-title">{dict.footer.contactTitle}</h2>
+        <ul role="list">
+          {company.phones.map((p) => (
+            <li>
+              <a href={telHref(p)}>{formatPhone(p)}</a>
+            </li>
+          ))}
+          <li>
+            <a
+              href={whatsappHref(company.whatsapp, dict.contact.whatsappMessage)}
+              target="_blank"
+              rel="noopener"
+            >
+              WhatsApp {formatPhone(company.whatsapp)}
+              <span class="visually-hidden">({dict.a11y.opensWhatsApp})</span>
+            </a>
+          </li>
+          <li>
+            <a href={mailtoHref(company.emails.general)}>{company.emails.general}</a>
+          </li>
+          <li>
+            <a href={mailtoHref(company.emails.management)}>{company.emails.management}</a>
+          </li>
+        </ul>
+        <p class="address">{formatAddress(company.address)}</p>
+      </div>
+
+      <div class="col">
+        <h2 class="col-title">{dict.footer.legalTitle}</h2>
+        <ul role="list">
+          <li>
+            <a href={pathFor('legalNotice', locale)}>{dict.footer.legalNotice}</a>
+          </li>
+          <li>
+            <a href={pathFor('privacy', locale)}>{dict.footer.privacy}</a>
+          </li>
+        </ul>
+        <h2 class="col-title lang-title">{dict.footer.languageTitle}</h2>
+        <LanguageSwitcher locale={locale} page={page} class="footer-lang" />
+      </div>
+    </div>
+
+    <div class="bottom">
+      <p>{`© ${year} ${company.legalName} · NIF ${company.nif}. ${dict.footer.rights}`}</p>
+      {site.illustrativeImages && <p class="note">{dict.footer.illustrativeImages}</p>}
+      <a class="to-top" href="#main">
+        {dict.a11y.backToTop}
+        <Icon name="arrowUp" size={16} />
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--navy-950);
+    padding-block: clamp(3.5rem, 7vw, 5.5rem) 6rem;
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: 1024px) {
+    .site-footer {
+      padding-bottom: 2.5rem;
+    }
+  }
+
+  .top {
+    display: grid;
+    gap: 2.5rem 2rem;
+  }
+
+  @media (min-width: 700px) {
+    .top {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .top {
+      grid-template-columns: 4fr 3fr 3fr 2fr;
+      gap: 3rem;
+    }
+  }
+
+  .brand {
+    display: inline-flex;
+    color: var(--white);
+  }
+
+  .brand :global(.footer-logo) {
+    height: 34px;
+    --logo-accent: var(--green-400);
+  }
+
+  .about p {
+    margin-top: 1.25rem;
+    max-width: 22rem;
+    color: var(--on-dark-2);
+  }
+
+  .col-title {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-stretch: 100%;
+    letter-spacing: 0.14em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: var(--green-400);
+  }
+
+  .lang-title {
+    margin-top: 1.75rem;
+  }
+
+  ul {
+    margin: 0.85rem 0 0;
+  }
+
+  li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    color: var(--on-dark-2);
+    text-decoration: none;
+  }
+
+  li a:hover {
+    color: var(--white);
+    text-decoration: underline;
+  }
+
+  .address {
+    margin-top: 0.75rem;
+    color: var(--on-dark-3);
+    max-width: 18rem;
+  }
+
+  .col :global(.footer-lang) {
+    margin-top: 0.5rem;
+    margin-left: -0.35rem;
+  }
+
+  .bottom {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-dark);
+    color: var(--on-dark-3);
+    font-size: 0.8125rem;
+  }
+
+  @media (min-width: 900px) {
+    .bottom {
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 2rem;
+    }
+  }
+
+  .note {
+    max-width: 40rem;
+  }
+
+  .to-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 40px;
+    color: var(--on-dark-2);
+    text-decoration: none;
+  }
+
+  .to-top:hover {
+    color: var(--white);
+  }
+</style>

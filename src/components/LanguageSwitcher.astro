@@ -1,0 +1,65 @@
+---
+import { LOCALES, pathFor, t, type Locale, type PageKey } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  page?: PageKey;
+  class?: string;
+}
+
+const { locale, page = 'home', class: className } = Astro.props;
+const dict = t(locale);
+---
+
+<nav class:list={['lang', className]} aria-label={dict.a11y.languageSwitcher}>
+  <ul role="list">
+    {LOCALES.map((l) => (
+      <li>
+        <a
+          href={pathFor(page, l)}
+          hreflang={t(l).htmlLang}
+          lang={t(l).htmlLang}
+          aria-current={l === locale ? 'true' : undefined}
+        >
+          <span aria-hidden="true">{l.toUpperCase()}</span>
+          <span class="visually-hidden">
+            {t(l).languageName}
+            {l === locale && ` (${dict.a11y.currentLanguage})`}
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  ul {
+    display: flex;
+    gap: 2px;
+    margin: 0;
+  }
+
+  a {
+    display: inline-grid;
+    place-items: center;
+    min-width: 40px;
+    min-height: 40px;
+    padding-inline: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--on-dark-3);
+    text-decoration: none;
+    transition: color 0.2s var(--ease);
+  }
+
+  a:hover {
+    color: var(--white);
+  }
+
+  a[aria-current='true'] {
+    color: var(--white);
+    box-shadow: inset 0 -2px 0 var(--green-400);
+  }
+</style>

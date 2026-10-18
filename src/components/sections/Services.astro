@@ -1,0 +1,136 @@
+---
+import ServiceCard from '../ServiceCard.astro';
+import { CORE_SERVICES, SECONDARY_SERVICES } from '../../data/services';
+import { t, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+
+/*
+ * Editorial layout for the five core services on a 12-column grid:
+ * 7+5 / 5+7 / full-width horizontal card.
+ */
+const layout = [
+  { area: 'span-7', sizes: '(min-width: 1328px) 740px, (min-width: 900px) 56vw, 100vw' },
+  { area: 'span-5', sizes: '(min-width: 1328px) 520px, (min-width: 900px) 40vw, 100vw' },
+  { area: 'span-5', sizes: '(min-width: 1328px) 520px, (min-width: 900px) 40vw, 100vw' },
+  { area: 'span-7', sizes: '(min-width: 1328px) 740px, (min-width: 900px) 56vw, 100vw' },
+  {
+    area: 'span-12',
+    sizes: '(min-width: 1328px) 740px, (min-width: 900px) 56vw, 100vw',
+    variant: 'wide' as const,
+  },
+];
+---
+
+<section id={dict.anchors.services} class="section" aria-labelledby="services-title">
+  <div class="container">
+    <header class="section-head" data-reveal>
+      <div>
+        <p class="eyebrow">{dict.services.eyebrow}</p>
+        <h2 id="services-title">{dict.services.title}</h2>
+      </div>
+      <p class="lead">{dict.services.intro}</p>
+    </header>
+
+    <div class="core">
+      {CORE_SERVICES.map((service, i) => (
+        <ServiceCard
+          service={service}
+          locale={locale}
+          index={i + 1}
+          class={layout[i].area}
+          sizes={layout[i].sizes}
+          variant={layout[i].variant}
+        />
+      ))}
+    </div>
+
+    <section class="other" aria-labelledby="other-title">
+      <div class="other-head" data-reveal>
+        <h3 id="other-title">{dict.services.otherTitle}</h3>
+        <p>{dict.services.otherIntro}</p>
+      </div>
+      <div class="other-list">
+        {SECONDARY_SERVICES.map((service, i) => (
+          <ServiceCard
+            service={service}
+            locale={locale}
+            index={CORE_SERVICES.length + i + 1}
+            variant="compact"
+            sizes="(min-width: 1328px) 210px, (min-width: 640px) 30vw, 100vw"
+          />
+        ))}
+      </div>
+    </section>
+  </div>
+</section>
+
+<style>
+  .core {
+    display: grid;
+    gap: clamp(3rem, 6vw, 4.5rem) 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .core {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .core > :global(.span-7) {
+      grid-column: span 7;
+    }
+
+    .core > :global(.span-5) {
+      grid-column: span 5;
+    }
+
+    .core > :global(.span-12) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .other {
+    display: grid;
+    gap: 2rem;
+    margin-top: clamp(4rem, 8vw, 6.5rem);
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .other-head h3 {
+    font-size: var(--step-2);
+    font-stretch: 108%;
+  }
+
+  .other-head p {
+    margin-top: 0.5rem;
+    color: var(--ink-3);
+  }
+
+  .other-list {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 1100px) {
+    .other {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 1.5rem;
+    }
+
+    .other-head {
+      grid-column: span 3;
+    }
+
+    .other-list {
+      grid-column: 4 / -1;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 2rem;
+    }
+  }
+</style>

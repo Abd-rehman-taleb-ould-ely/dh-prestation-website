@@ -1,0 +1,40 @@
+---
+import { Picture } from 'astro:assets';
+import { getImage } from '../data/images';
+import { t, type ImageId, type Locale } from '../i18n';
+
+interface Props {
+  id: ImageId;
+  locale: Locale;
+  /** `sizes` attribute describing the rendered width at each breakpoint. */
+  sizes: string;
+  widths?: number[];
+  priority?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  locale,
+  sizes,
+  widths = [480, 800, 1200, 1600],
+  priority = false,
+  class: className,
+} = Astro.props;
+const { src, position } = getImage(id);
+const usable = widths.filter((w) => w <= src.width);
+---
+
+<Picture
+  src={src}
+  alt={t(locale).images[id]}
+  widths={usable.length ? usable : [src.width]}
+  sizes={sizes}
+  formats={['avif', 'webp']}
+  quality={72}
+  priority={priority}
+  loading={priority ? 'eager' : 'lazy'}
+  decoding={priority ? 'sync' : 'async'}
+  class={className}
+  style={`object-position: ${position}`}
+/>

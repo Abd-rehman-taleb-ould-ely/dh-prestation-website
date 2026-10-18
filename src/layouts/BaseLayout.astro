@@ -1,0 +1,121 @@
+---
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/global.css';
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+import { site } from '../config/site';
+import {
+  LOCALES,
+  absoluteUrl,
+  alternatesFor,
+  pathFor,
+  t,
+  type Locale,
+  type PageKey,
+} from '../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Logical page, used for canonical and hreflang URLs. Omit for pages outside the route map (404). */
+  page?: PageKey;
+  title: string;
+  description: string;
+  noindex?: boolean;
+  structuredData?: Record<string, unknown>;
+}
+
+const { locale, page, title, description, noindex = false, structuredData } = Astro.props;
+const dict = t(locale);
+const canonical = page ? absoluteUrl(pathFor(page, locale)) : undefined;
+const alternates = page ? alternatesFor(page) : [];
+const ogImage = absoluteUrl(site.ogImage);
+---
+
+<!doctype html>
+<html lang={dict.htmlLang} dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    {alternates.map((alt) => (
+      <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+    ))}
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta name="theme-color" content={site.themeColor} />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="D.H. PRESTATION, S.L." />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={dict.meta.ogImageAlt} />
+    <meta property="og:locale" content={dict.ogLocale} />
+    {LOCALES.filter((l) => l !== locale).map((l) => (
+      <meta property="og:locale:alternate" content={t(l).ogLocale} />
+    ))}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {structuredData && (
+      <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    )}
+
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      {dict.a11y.skipToContent}
+    </a>
+    <Header locale={locale} page={page} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer locale={locale} page={page} />
+    <WhatsAppFloat locale={locale} />
+
+    <script>
+      import { initReveal } from '../scripts/reveal';
+      initReveal();
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    background: var(--white);
+    color: var(--navy-900);
+    font-weight: 600;
+    text-decoration: none;
+    transform: translateY(-200%);
+  }
+
+  .skip-link:focus {
+    transform: none;
+  }
+
+  main:focus {
+    outline: none;
+  }
+</style>

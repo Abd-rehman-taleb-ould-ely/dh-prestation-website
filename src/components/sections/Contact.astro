@@ -1,0 +1,298 @@
+---
+import Icon from '../Icon.astro';
+import { company } from '../../config/company';
+import { SERVICES } from '../../data/services';
+import { t, type Locale } from '../../i18n';
+import { formatPhone, mailtoHref, telHref } from '../../lib/contact';
+import { whatsappHref } from '../../lib/whatsapp';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+const c = dict.contact;
+const a = company.address;
+---
+
+<section
+  id={dict.anchors.contact}
+  class="section section--stone"
+  aria-labelledby="contact-title"
+  data-contact-section
+>
+  <div class="container">
+    <div class="panel">
+      <div class="primary on-dark" data-reveal>
+        <p class="eyebrow">{c.eyebrow}</p>
+        <h2 id="contact-title">{c.title}</h2>
+        <p class="lead">{c.lead}</p>
+
+        <a
+          class="btn btn--primary btn--lg wa-main"
+          href={whatsappHref(company.whatsapp, c.whatsappMessage)}
+          target="_blank"
+          rel="noopener"
+          aria-describedby="wa-note"
+        >
+          <Icon name="whatsapp" />
+          {c.whatsappCta}
+          <span class="visually-hidden">({dict.a11y.opensWhatsApp})</span>
+        </a>
+        <p class="wa-note" id="wa-note">
+          {c.whatsappNote}
+        </p>
+
+        <div class="shortcuts">
+          <h3 class="mono">{c.shortcutsTitle}</h3>
+          <ul role="list">
+            {SERVICES.map((s) => (
+              <li>
+                <a
+                  href={whatsappHref(company.whatsapp, dict.services.items[s.id].whatsapp)}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {dict.services.items[s.id].short}
+                  <span class="visually-hidden">({dict.a11y.opensWhatsApp})</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="details" data-reveal>
+        <h3 class="details-title">{c.detailsTitle}</h3>
+        <dl>
+          <div class="row">
+            <dt>
+              <Icon name="phone" size={20} />
+              {c.phone}
+            </dt>
+            {company.phones.map((p) => (
+              <dd>
+                <a href={telHref(p)}>{formatPhone(p)}</a>
+              </dd>
+            ))}
+          </div>
+          <div class="row">
+            <dt>
+              <Icon name="whatsapp" size={20} />
+              {c.whatsapp}
+            </dt>
+            <dd>
+              <a
+                href={whatsappHref(company.whatsapp, c.whatsappMessage)}
+                target="_blank"
+                rel="noopener"
+              >
+                {formatPhone(company.whatsapp)}
+                <span class="visually-hidden">({dict.a11y.opensWhatsApp})</span>
+              </a>
+            </dd>
+          </div>
+          <div class="row">
+            <dt>
+              <Icon name="mail" size={20} />
+              {c.email}
+            </dt>
+            <dd>
+              <a href={mailtoHref(company.emails.general)}>{company.emails.general}</a>
+              <span class="hint">{c.emailGeneral}</span>
+            </dd>
+            <dd>
+              <a href={mailtoHref(company.emails.management)}>{company.emails.management}</a>
+              <span class="hint">{c.emailManagement}</span>
+            </dd>
+          </div>
+          <div class="row">
+            <dt>
+              <Icon name="pin" size={20} />
+              {c.address}
+            </dt>
+            <dd>
+              <address>
+                {company.legalName}
+                <br />
+                {a.street}
+                <br />
+                {a.postalCode} {a.locality}, {a.region}
+                <br />
+                {a.country}
+              </address>
+            </dd>
+          </div>
+          <div class="row">
+            <dt>
+              <Icon name="document" size={20} />
+              {c.nif}
+            </dt>
+            <dd>{company.nif}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .panel {
+    display: grid;
+    background: var(--white);
+    box-shadow: 0 30px 60px -40px rgb(7 20 35 / 0.35);
+  }
+
+  @media (min-width: 1000px) {
+    .panel {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    }
+  }
+
+  .primary {
+    position: relative;
+    isolation: isolate;
+    padding: clamp(2rem, 5vw, 4rem);
+    background: var(--navy-900);
+    overflow: hidden;
+  }
+
+  h2 {
+    margin-top: 1.25rem;
+  }
+
+  .lead {
+    margin-top: 1.25rem;
+    max-width: 36rem;
+  }
+
+  .wa-main {
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 479px) {
+    .wa-main {
+      width: 100%;
+    }
+  }
+
+  .wa-note {
+    margin-top: 0.85rem;
+    max-width: 30rem;
+    font-size: 0.875rem;
+    color: var(--on-dark-3);
+  }
+
+  .shortcuts {
+    margin-top: 2.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line-dark);
+  }
+
+  .shortcuts h3 {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-400);
+  }
+
+  .shortcuts ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
+  }
+
+  .shortcuts a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.5rem 0.95rem;
+    border: 1px solid var(--line-dark);
+    font-size: 0.9375rem;
+    color: var(--on-dark-2);
+    text-decoration: none;
+    transition:
+      border-color 0.2s var(--ease),
+      color 0.2s var(--ease),
+      background-color 0.2s var(--ease);
+  }
+
+  .shortcuts a:hover {
+    border-color: var(--green-400);
+    color: var(--white);
+    background: rgb(255 255 255 / 0.05);
+  }
+
+  .details {
+    padding: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .details-title {
+    font-size: var(--step-2);
+    font-stretch: 108%;
+  }
+
+  dl {
+    margin-top: 1.5rem;
+  }
+
+  .row {
+    display: grid;
+    gap: 0.35rem;
+    padding-block: 1.1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  dt {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  dt :global(svg) {
+    color: var(--green-700);
+  }
+
+  dd {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.75rem;
+    padding-left: calc(20px + 0.6rem);
+  }
+
+  dd a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--navy-900);
+    text-decoration: none;
+  }
+
+  dd a:hover {
+    color: var(--green-700);
+    text-decoration: underline;
+  }
+
+  .hint {
+    font-size: 0.875rem;
+    color: var(--ink-3);
+  }
+
+  address {
+    font-style: normal;
+    color: var(--ink-2);
+    line-height: 1.55;
+    padding-block: 0.4rem;
+  }
+</style>

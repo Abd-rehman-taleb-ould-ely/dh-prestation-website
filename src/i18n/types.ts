@@ -159,7 +159,6 @@ export interface Dictionary {
     emailGeneral: string;
     emailManagement: string;
     address: string;
-    nif: string;
   };
 
   footer: {

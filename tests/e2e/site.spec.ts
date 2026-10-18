@@ -109,7 +109,8 @@ for (const locale of LOCALES) {
       await expect(contact.locator('a[href="mailto:gerencia@dhp-solar.site"]')).toHaveCount(1);
       await expect(contact).toContainText('Calle María del Rocío 83 B');
       await expect(contact).toContainText('41130 La Puebla del Río');
-      await expect(contact).toContainText(company.nif);
+      // The tax ID is shown only in the legal notice, not in the contact section.
+      await expect(contact).not.toContainText(company.nif);
 
       // Every WhatsApp link targets the company number and opens in a new tab.
       const waLinks = page.locator('a[href^="https://wa.me/"]');

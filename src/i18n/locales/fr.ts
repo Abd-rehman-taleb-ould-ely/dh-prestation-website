@@ -248,7 +248,6 @@ const fr: Dictionary = {
     emailGeneral: 'Informations générales',
     emailManagement: 'Direction',
     address: 'Siège social',
-    nif: 'N° d’identification fiscale (NIF)',
   },
 
   footer: {

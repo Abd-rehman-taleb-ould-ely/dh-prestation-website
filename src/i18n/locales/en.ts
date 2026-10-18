@@ -248,7 +248,6 @@ const en: Dictionary = {
     emailGeneral: 'General enquiries',
     emailManagement: 'Management',
     address: 'Registered address',
-    nif: 'Tax ID (NIF)',
   },
 
   footer: {

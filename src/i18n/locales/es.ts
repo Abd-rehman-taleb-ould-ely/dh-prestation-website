@@ -248,7 +248,6 @@ const es: Dictionary = {
     emailGeneral: 'Información general',
     emailManagement: 'Gerencia',
     address: 'Domicilio social',
-    nif: 'NIF',
   },
 
   footer: {

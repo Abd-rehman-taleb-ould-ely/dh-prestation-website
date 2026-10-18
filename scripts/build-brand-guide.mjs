@@ -355,7 +355,7 @@ pages.push(
       </div>
       <div class="contact-card dark">
         <div class="cc-logo">${logoWhite}</div>
-        <p>D.H. PRESTATION, S.L.<br>NIF B27656149<br>Calle María del Rocío 83 B<br>41130 La Puebla del Río, Sevilla, España</p>
+        <p>D.H. PRESTATION, S.L.<br>Calle María del Rocío 83 B<br>41130 La Puebla del Río, Sevilla, España</p>
         <p class="mono">+34 624 817 846 · +34 672 546 266<br>WhatsApp +34 687 032 956<br>info@dhp-solar.site</p>
       </div>
     </div>`,

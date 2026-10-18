@@ -154,6 +154,13 @@ The logo is an original mark: three photovoltaic module cells tilted like a trac
 | `public/og-image.jpg`                                                     | 1200×630 social sharing image                 |
 | `src/assets/brand/logo.svg`, `mark.svg`                                   | Inline versions used by the site (CSS colour) |
 
+**Brand kit for printers, partners and social media** (in `brand/`):
+
+- `DHP-Brand-Identity-Guidelines.pdf`: logo, versions, clear space, incorrect use, colours (HEX/RGB/CMYK), typography, imagery and applications.
+- `DHP-Logo-Package.zip`: the `brand/logo/` folder zipped. It contains every logo and symbol variant (colour, white, black, app icon) as SVG, vector PDF and high-resolution transparent PNG.
+
+Regenerate both with `npm run brand && npm run brand:guide`, then re-zip `brand/logo/`.
+
 ## Quality checks
 
 `npm run verify` runs everything below in order. The test suites cover:

@@ -218,4 +218,30 @@ await base
   .jpeg({ quality: 84, progressive: true, mozjpeg: true })
   .toFile(out('public/og-image.jpg'));
 
+// 5. Logo package for print and third parties (brand/logo/): every colour variant as SVG
+//    plus high-resolution transparent PNGs. PDF versions are added by build-brand-guide.mjs.
+const variants = {
+  color: { structure: COLORS.navy, accent: COLORS.green, text: COLORS.navy },
+  white: { structure: COLORS.white, accent: COLORS.greenOnDark, text: COLORS.white },
+  black: { structure: '#000000', accent: '#000000', text: '#000000', suffixOpacity: 1 },
+};
+for (const [name, colors] of Object.entries(variants)) {
+  const logo = named(lockup(colors));
+  const symbol = named(markSvg(colors));
+  fs.writeFileSync(out(`brand/logo/svg/dhp-logo-${name}.svg`), logo);
+  fs.writeFileSync(out(`brand/logo/svg/dhp-symbol-${name}.svg`), symbol);
+  await png(
+    logo.replace('<svg ', `<svg width="${LOCKUP_W}" height="48" `),
+    `brand/logo/png/dhp-logo-${name}.png`,
+    3000,
+  );
+  await png(
+    symbol.replace('<svg ', '<svg width="48" height="48" '),
+    `brand/logo/png/dhp-symbol-${name}.png`,
+    1500,
+  );
+}
+fs.writeFileSync(out('brand/logo/svg/dhp-app-icon.svg'), tile());
+await png(tile(), 'brand/logo/png/dhp-app-icon.png', 1024);
+
 console.log('Brand assets generated.');

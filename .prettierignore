@@ -8,3 +8,4 @@ src/assets/brand
 test-results
 playwright-report
 public/_headers
+brand/logo/svg

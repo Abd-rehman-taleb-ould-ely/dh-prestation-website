@@ -25,13 +25,13 @@ The site presents the company's photovoltaic structure and tracker assembly, mod
 
 ## Technology
 
-| Choice                                              | Why                                                                                                                                                                                                       |
-| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **[Astro 7](https://astro.build)**, static output   | It renders every page to plain HTML at build time and ships almost no JavaScript (under 2 KB, for the mobile menu and scroll effects). It has built-in responsive image optimisation (AVIF/WebP). The output is a `dist/` folder that any static host can serve. |
-| **TypeScript**                                      | The translation files share one `Dictionary` type, so a missing translation fails the type check.                                                                                                        |
-| **Plain CSS** (design tokens + component styles)    | No CSS framework. Styles are scoped to each component.                                                                                                                                                    |
-| **Self-hosted fonts** (Fontsource)                  | Archivo (variable) and IBM Plex Mono are bundled at build time. Google Fonts is not called at runtime.                                                                                                     |
-| **Vitest + Playwright + axe-core** (dev only)       | Unit tests for content and links, end-to-end tests on the production build, and automated WCAG 2.1 AA checks.                                                                                              |
+| Choice                                            | Why                                                                                                                                                                                                                                                              |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[Astro 7](https://astro.build)**, static output | It renders every page to plain HTML at build time and ships almost no JavaScript (under 2 KB, for the mobile menu and scroll effects). It has built-in responsive image optimisation (AVIF/WebP). The output is a `dist/` folder that any static host can serve. |
+| **TypeScript**                                    | The translation files share one `Dictionary` type, so a missing translation fails the type check.                                                                                                                                                                |
+| **Plain CSS** (design tokens + component styles)  | No CSS framework. Styles are scoped to each component.                                                                                                                                                                                                           |
+| **Self-hosted fonts** (Fontsource)                | Archivo (variable) and IBM Plex Mono are bundled at build time. Google Fonts is not called at runtime.                                                                                                                                                           |
+| **Vitest + Playwright + axe-core** (dev only)     | Unit tests for content and links, end-to-end tests on the production build, and automated WCAG 2.1 AA checks.                                                                                                                                                    |
 
 Runtime dependencies are limited to Astro, `sharp` for image processing at build time, and the two font packages. Nothing in `node_modules` reaches the visitor except the fonts.
 
@@ -46,17 +46,17 @@ npm run build        # production build into dist/
 npm run preview      # serve dist/ locally exactly as a static host would
 ```
 
-| Script                 | What it does                                                                         |
-| ---------------------- | ------------------------------------------------------------------------------------ |
-| `npm run dev`          | Development server with hot reload                                                   |
-| `npm run build`        | Static production build in `dist/`                                                   |
-| `npm run preview`      | Serves the built site                                                                |
-| `npm run check`        | TypeScript and Astro diagnostics                                                     |
-| `npm run format`       | Formats everything with Prettier (`format:check` only checks)                         |
-| `npm test`             | Unit tests (Vitest)                                                                  |
-| `npm run test:e2e`     | End-to-end and accessibility tests (Playwright). **Run `npm run build` first.**      |
-| `npm run verify`       | Format check → type check → unit tests → build → e2e: the full pre-deploy gate       |
-| `npm run brand`        | Regenerates logo files, favicons and the social image from `scripts/build-brand.mjs` |
+| Script             | What it does                                                                         |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| `npm run dev`      | Development server with hot reload                                                   |
+| `npm run build`    | Static production build in `dist/`                                                   |
+| `npm run preview`  | Serves the built site                                                                |
+| `npm run check`    | TypeScript and Astro diagnostics                                                     |
+| `npm run format`   | Formats everything with Prettier (`format:check` only checks)                        |
+| `npm test`         | Unit tests (Vitest)                                                                  |
+| `npm run test:e2e` | End-to-end and accessibility tests (Playwright). **Run `npm run build` first.**      |
+| `npm run verify`   | Format check → type check → unit tests → build → e2e: the full pre-deploy gate       |
+| `npm run brand`    | Regenerates logo files, favicons and the social image from `scripts/build-brand.mjs` |
 
 Playwright needs a Chromium browser. If it isn't installed on your machine, run `npx playwright install chromium` once.
 
@@ -93,11 +93,11 @@ tests/unit, tests/e2e   ← Vitest and Playwright suites
 
 ### URLs
 
-| Page           | Spanish (default) | English              | French                  |
-| -------------- | ----------------- | -------------------- | ----------------------- |
-| Home           | `/`               | `/en/`               | `/fr/`                  |
-| Legal notice   | `/aviso-legal/`   | `/en/legal-notice/`  | `/fr/mentions-legales/` |
-| Privacy policy | `/privacidad/`    | `/en/privacy/`       | `/fr/confidentialite/`  |
+| Page           | Spanish (default) | English             | French                  |
+| -------------- | ----------------- | ------------------- | ----------------------- |
+| Home           | `/`               | `/en/`              | `/fr/`                  |
+| Legal notice   | `/aviso-legal/`   | `/en/legal-notice/` | `/fr/mentions-legales/` |
+| Privacy policy | `/privacidad/`    | `/en/privacy/`      | `/fr/confidentialite/`  |
 
 Each page has a canonical URL, `hreflang` alternates for all three languages, and `x-default` pointing to Spanish. The same alternates appear in `/sitemap.xml`. These URLs only resolve publicly once the site is deployed and the domain is configured. Paths are defined once in `ROUTES` (`src/i18n/index.ts`).
 
@@ -114,17 +114,17 @@ Each page has a canonical URL, `hreflang` alternates for all three languages, an
 
 > **Current images are original 3D-rendered placeholders created for this project.** They are not photographs of D.H. PRESTATION work, and the footer says so (`site.illustrativeImages`). They carry no third-party licence obligations. Stock-photo libraries were not reachable from the build environment, so no stock photographs were downloaded.
 
-| Slot                         | File (in `src/assets/images/`) | Size / ratio used                 |
-| ---------------------------- | ------------------------------ | --------------------------------- |
-| Hero                         | `hero-solar-plant.jpg`         | ≥ 2560 × 1440, 16:9, keep the left side calm (text overlay) |
-| Structures                   | `service-structures.jpg`       | ≥ 1600 × 1067 (3:2)               |
-| Trackers                     | `service-trackers.jpg`         | ≥ 1600 × 1067                     |
-| Modules                      | `service-modules.jpg`          | ≥ 1600 × 1067                     |
-| Electrical installations     | `service-electrical.jpg`       | ≥ 1600 × 1067                     |
-| Subcontracting               | `service-subcontracting.jpg`   | ≥ 1600 × 1067                     |
-| Construction                 | `service-construction.jpg`     | ≥ 1600 × 1067                     |
-| Machinery & equipment        | `service-machinery.jpg`        | ≥ 1600 × 1067                     |
-| Company section              | `company-site.jpg`             | ≥ 1600 × 1200 (4:3)               |
+| Slot                     | File (in `src/assets/images/`) | Size / ratio used                                           |
+| ------------------------ | ------------------------------ | ----------------------------------------------------------- |
+| Hero                     | `hero-solar-plant.jpg`         | ≥ 2560 × 1440, 16:9, keep the left side calm (text overlay) |
+| Structures               | `service-structures.jpg`       | ≥ 1600 × 1067 (3:2)                                         |
+| Trackers                 | `service-trackers.jpg`         | ≥ 1600 × 1067                                               |
+| Modules                  | `service-modules.jpg`          | ≥ 1600 × 1067                                               |
+| Electrical installations | `service-electrical.jpg`       | ≥ 1600 × 1067                                               |
+| Subcontracting           | `service-subcontracting.jpg`   | ≥ 1600 × 1067                                               |
+| Construction             | `service-construction.jpg`     | ≥ 1600 × 1067                                               |
+| Machinery & equipment    | `service-machinery.jpg`        | ≥ 1600 × 1067                                               |
+| Company section          | `company-site.jpg`             | ≥ 1600 × 1200 (4:3)                                         |
 
 **To replace an image with a real company photograph:**
 
@@ -132,7 +132,7 @@ Each page has a canonical URL, `hreflang` alternates for all three languages, an
 2. Save it in `src/assets/images/` with the **same base name**. If the extension changes, delete the old file.
 3. Update its alt text in all three locale files under `images.<slot>`. Describe what the photo shows.
 4. If the subject isn't centred, set a focal point in `src/data/images.ts` (e.g. `position: '30% 60%'`).
-5. When *every* image shows genuine company work, set `illustrativeImages: false` in `src/config/site.ts` to remove the footer notice.
+5. When _every_ image shows genuine company work, set `illustrativeImages: false` in `src/config/site.ts` to remove the footer notice.
 6. Run `npm run brand` if you replaced the hero, so the social-sharing image (`public/og-image.jpg`) uses it.
 
 Astro generates resized AVIF/WebP versions automatically. The hero is preloaded and every other image is lazy-loaded.
@@ -145,14 +145,14 @@ The logo is an original mark: three photovoltaic module cells tilted like a trac
 
 `npm run brand` regenerates all brand files from `scripts/build-brand.mjs`:
 
-| File                                                      | Use                                         |
-| --------------------------------------------------------- | ------------------------------------------- |
-| `public/brand/dhp-logo.svg` / `.png`                      | Logo on light backgrounds                   |
-| `public/brand/dhp-logo-white.svg` / `.png`                | Logo on dark backgrounds                    |
-| `public/brand/dhp-mark.svg`, `dhp-mark-white.svg`         | Symbol only                                 |
-| `public/favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-*.png` | Browser and device icons     |
-| `public/og-image.jpg`                                     | 1200×630 social sharing image               |
-| `src/assets/brand/logo.svg`, `mark.svg`                   | Inline versions used by the site (CSS colour) |
+| File                                                                      | Use                                           |
+| ------------------------------------------------------------------------- | --------------------------------------------- |
+| `public/brand/dhp-logo.svg` / `.png`                                      | Logo on light backgrounds                     |
+| `public/brand/dhp-logo-white.svg` / `.png`                                | Logo on dark backgrounds                      |
+| `public/brand/dhp-mark.svg`, `dhp-mark-white.svg`                         | Symbol only                                   |
+| `public/favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-*.png` | Browser and device icons                      |
+| `public/og-image.jpg`                                                     | 1200×630 social sharing image                 |
+| `src/assets/brand/logo.svg`, `mark.svg`                                   | Inline versions used by the site (CSS colour) |
 
 ## Quality checks
 
@@ -182,7 +182,7 @@ Security headers are pre-configured in `public/_headers` (Netlify, Cloudflare Pa
 4. At the registrar or DNS provider for `dhp.es`, create the records the host shows you. Typically these are:
    - apex `dhp.es`: an `A`/`ALIAS`/`ANAME` record (or CNAME flattening) to the host's target,
    - `www`: a `CNAME` to the host's target.
-   Alternatively, delegate the whole zone's nameservers to the host (e.g. Cloudflare).
+     Alternatively, delegate the whole zone's nameservers to the host (e.g. Cloudflare).
 5. HTTPS: all three hosts issue and renew a free Let's Encrypt certificate automatically once DNS resolves. Enable **"Force HTTPS"** or **"Always use HTTPS"**.
 6. **Do not change the `MX` records** (or the SPF/DKIM `TXT` records) of `dhp.es` when editing DNS. They deliver email to `info@dhp.es` and `gerencia@dhp.es`.
 
